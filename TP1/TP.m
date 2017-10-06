@@ -1,3 +1,7 @@
+% Loïc LERAT 1920881
+% Simon-Pierre DESJARDINS 1739351
+
+
 %% Nettoyage du workspace
 clear all;
 close all;
@@ -102,14 +106,13 @@ ylabel("Y(t)");
 %   réelle du signal analogique
 
 %4. Sachant que la frequence optimale Fe doit être au moins égale au double
-%de la fréquence maximale du signal analogique et considérant que la
+%de la fréquence maximale du signal analogique (théorème de Shannon) et considérant que la
 %fréquence maximale de notre signal analogique est 82.5 Hz , notre
 %fréquence d'échantillonnage doit être d'au moins 165Hz. Les seules
 %fréquences d'échantillonnage qui satisfont le théorème de Nyquist-Shannon
 %sont 180Hz et 330Hz. 
 
 %La fréquence d'échantillonage optimale serait donc 180 Hz
-%TODO: à vérifier
 
 
 
@@ -141,11 +144,11 @@ plot(t, Y3(t), '--');
 % On constate que les valeurs correspondent
 
 
-%3. En déplacant notre domaine des x en mettant de 0 à 5, nous pouvons
+%3. En définissant notre domaine des x de 0 à 5, nous pouvons
 %remarquer que des motifs semblent se répéter à chaque période de 1. De
 %manière analytique, il suffit de trouver le plus grand diviseur commun des
-%fréquences (4hz, 45hz, 70h) qui correspond à 1. Cela se traduit en
-%période de 1 également ce qui confirme notre lecture graphique.
+%fréquences (4hz, 45hz, 70h), celui-ci est égal à 1. Cela se traduit en
+%une période de 1 ce qui confirme notre lecture graphique.
 
 Z = @(t) (Y1(t) + Y2(t) + Y3(t));
 
@@ -165,7 +168,7 @@ hold on;
 f = linspace(-125,125,length(t));
 
 %Nous divisions par le nombre de points pour obtenir l'amplitude / 2. Il
-%suffit de multiplier par 2 pour obtenir l'amplitude du signal.
+%suffit de multiplier par 2 pour obtenir l'amplitude réelle du signal.
 plot(f,fftshift(abs(fft(Y1(t))))/length(t) * 2);
 plot(f,fftshift(abs(fft(Y2(t))))/length(t) * 2);
 plot(f,fftshift(abs(fft(Y3(t))))/length(t) * 2);
@@ -175,7 +178,7 @@ title("Exercice 3 (TFD) - TP1");
 xlabel("f");
 ylabel("Y(f)");
 
-%Nous remarquons que l'abscisse des pics correspond au fréquence que nous
+%Nous remarquons que l'abscisse des pics correspond aux fréquences que nous
 %avons trouvé pour chacun des signaux. Nous avons également une symétrie
 %des fréquences que nous avons obtenu avec fftshift. Au départ, nous avions
 %également les mauvaises amplitudes, cela était causé par le fait qu'elles 
@@ -210,3 +213,153 @@ ylabel("Z(f)");
 %sont de même amplitude). Nous remarquons alors que la TFD est linéaire, ce
 %qui veut dire que la somme des TFD de signaux est équivalente au TFD de la
 %somme des signaux.
+
+
+
+%% Exercice IV
+% Filtrage audio
+
+%1.
+[Data,Fe] = audioread('audio.wav');
+
+%sound(Data,Fe);
+
+
+%En écoutant le signal, nous entendons un "buzz" tout au long de la chanson
+%qui semble être un signal de haute fréquence avec un son très aigu. Il 
+%semble également y avoir une perturbation de basse fréquence comme un 
+%bourdonnement. 
+
+
+%2.
+
+f = linspace(0,Fe,length(Data));
+TF = abs(fft(Data))/length(Data);
+
+%On a aussi divisé notre graphique pour ne traiter qu'une partie du signal 
+%qui nous intéresse qui correspond à la moitié des valeurs du vecteur TF.
+%De base, le graphe présente une symétrie des fréquences, pour obtenir
+%l'amplitude réelle, il faudra donc multiplier par 2 les amplitudes dans le
+%domaine qui nous intéresse (sauf à l'abscisse 0 car nous sommes sur l'axe
+%de symétrie.
+
+TF(2:length(Data)) = TF(2:length(Data))*2;
+plot(f(1:length(f)/2+1),TF(1:length(TF)/2+1));
+title("Exercice 4 (TFD) - TP1");
+xlabel("f");
+ylabel("TF(f)");
+
+
+%3. Nous percevons clairement deux perturbations (deux pics). La
+%perturbation la plus haute fréquence a une fréquence de 1244Hz ce qui
+%correspond à une note ré# d'octave 5.
+
+
+%4
+
+b = fir1(128, 950/(Fe/2));
+pb = filter(b,1,Data);
+TFPB = abs(fft(pb))/length(pb);
+
+TFPB(2:length(pb)) = TFPB(2:length(pb))*2;
+
+figure;
+plot(f(1:length(f)/2+1),TFPB(1:length(TFPB)/2+1));
+
+title("Exercice 4 (TFD après filtrage passe-bas) - TP1");
+xlabel("f");
+ylabel("TF(f)");
+
+%sound(pb,Fe)
+
+%On choisit de manière arbitraire une fréquence de coupure de 950Hz
+%pour atténuer la plus haute fréquence. Avec cette fréquence de coupure, on
+%semble avoir presque complètement atténué la perturbation haute fréquence à l'écoute.
+%Nous observons une perte d'information au niveau des hautes fréquences au
+%dessus de 950 Hz correspondant à notre fréquence de coupure. Les
+%fréquences entre 950 et 1250Hz sont plus ou moins atténuées tandis que les
+%fréquences au-dessus ne seront plus perceptibles à l'écoute. Nous perdons
+%alors différents sons composant la musique. 
+%Pour éviter de perdre trop d'information tout en coupant la fréquence de
+%perturbation, il nous faudrait un filtre ciblée sur cette fréquence qui
+%n'attenue qu'une certaine zone autour d'elle
+
+
+%5
+
+cheb = fir1(128,250/(Fe/2),'high', chebwin(129,30));
+hamm = fir1(128,250/(Fe/2),'high', hamming(129));
+blackm = fir1(128,250/(Fe/2),'high', blackman(129));
+
+
+%6
+
+freqz([dfilt.dffir(cheb),dfilt.dffir(hamm), dfilt.dffir(blackm)]); 
+legend("Chebyshev","Hamming", "Blackman");
+
+%On constate que la réponse fréquentielle diffère selon le filtre. Ainsi,
+%on peut s'attendre à ce que Chebyshev soit le filtre qui attenue le plus
+%les basses fréquences et Blackman est celui qui atténue le moins. Pour ce
+%qui de Hamming, il se situe entre les deux et nous estimons qu'il
+%atténuera modérément les basses fréquences. 
+
+
+%7
+
+chebFilter = filter(cheb,1,pb);
+hammFilter = filter(hamm,1,pb);
+blackmFilter = filter(blackm,1,pb);
+%sound(chebFilter,Fe);
+%sound(hammFilter,Fe);
+%sound(blackmFilter,Fe);
+
+%On remarque que la perturbation basse fréquence n'est plus présente après
+%filtrage passe-haut. A l'oreille il est difficile de percevoir une
+%différence entre les trois types de filtres passe-haut.
+%On retrouve un problème similaire au filtre passe-bas : en attenuant toutes
+%les fréquences plus basses que 250Hz, cela nous permet d'éliminer la
+%perturbation mais on risque de perdre des fréquences intéressantes de la
+%musique (instruments graves tels que la basse ou la batterie).
+
+
+%8
+
+%TFD Chebyshev
+TFPHC = abs(fft(chebFilter))/length(chebFilter);
+TFPHC(2:length(chebFilter)) = TFPHC(2:length(chebFilter))*2;
+
+figure;
+plot(f(1:length(f)/2+1),TFPHC(1:length(TFPHC)/2+1));
+title("Exercice 4 (TFD après filtrage passe-haut Chebyshev) - TP1");
+xlabel("f");
+ylabel("TF(f)");
+
+%TFD Hamming
+TFPHH = abs(fft(hammFilter))/length(hammFilter);
+TFPHH(2:length(hammFilter)) = TFPHH(2:length(hammFilter))*2;
+
+figure;
+plot(f(1:length(f)/2+1),TFPHH(1:length(TFPHH)/2+1));
+title("Exercice 4 (TFD après filtrage passe-haut Hamming) - TP1");
+xlabel("f");
+ylabel("TF(f)");
+
+%TFD Blackman
+TFPHB = abs(fft(blackmFilter))/length(blackmFilter);
+TFPHB(2:length(blackmFilter)) = TFPHB(2:length(blackmFilter))*2;
+
+figure;
+plot(f(1:length(f)/2+1),TFPHB(1:length(TFPHB)/2+1));
+title("Exercice 4 (TFD après filtrage passe-haut Blackman) - TP1");
+xlabel("f");
+ylabel("TF(f)");
+
+
+% On remarque sur les TFD que la fréquence de perturbation basse est bien
+% atténuée (l'amplitude diminue nettement). Comme nous le supposions à la 
+% question précédente, Chebyshev est le filtre qui attenue le plus 
+%(amplitude de 6.5x10-3), suivi par Hamming(amplitude de 0.036) puis 
+%Blackman (amplitude de 0.1). Nous pensons que les spectres correspondent
+%également à ce que nous avons entendu malgré que la différence était 
+%beaucoup plus difficile à distinguer à l'oreille qu'avec les spectres.
+
