@@ -1,0 +1,715 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-11-10"><meta name="DC.source" content="TP.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Nettoyage du workspace</a></li><li><a href="#3">Exercice I</a></li><li><a href="#4">Exercice II</a></li><li><a href="#5">Exercice III</a></li><li><a href="#6">Exercice IV</a></li></ul></div><pre class="codeinput"><span class="comment">% Lo&iuml;c LERAT 1920881</span>
+<span class="comment">% Simon-Pierre DESJARDINS 1739351</span>
+</pre><h2 id="2">Nettoyage du workspace</h2><pre class="codeinput">clear <span class="string">all</span>;
+close <span class="string">all</span>;
+clc;
+</pre><h2 id="3">Exercice I</h2><p>R&eacute;haussement d'images</p><pre class="codeinput">image = imread(<span class="string">'theArtist.png'</span>);
+
+type <span class="string">Egalisation_Histogramme</span>;
+imageEgalisee = uint8(Egalisation_Histogramme(image));
+
+
+imshow(imageEgalisee);
+title(<span class="string">"Exercice 1   1. Image &eacute;galis&eacute;e"</span>);
+
+<span class="comment">%2-3. Convolution</span>
+
+type <span class="string">Convolution.m</span>;
+MasqueGau = 1/90 * [1,2,1,2,1;2,4,8,4,2;1,8,18,8,1;2,4,8,4,2;1,2,1,2,1];
+imageConvo = uint8(Convolution(imageEgalisee,MasqueGau));
+
+figure;
+imshow(imageConvo);
+title(<span class="string">"Exercice 1   2-3. Image convolu&eacute;e avec masque Gaussien"</span>);
+
+<span class="comment">%4. Rehaussement Contour</span>
+
+figure;
+
+type <span class="string">Rehaussement_Contour.m</span>;
+imageRehaussee = uint8(Rehaussement_Contour(imageConvo,1.2));
+imshow(imageRehaussee);
+title(<span class="string">"Exercice 1   4. Contours rehauss&eacute;s"</span>);
+
+<span class="comment">%5. En rehaussant les contours, nous avons &eacute;galement rehauss&eacute; les</span>
+<span class="comment">%particules de bruits qui restaient &agrave; la suite du filtre Gaussien. Le</span>
+<span class="comment">%filtre m&eacute;dian permettrait de r&eacute;duire le bruit impulsionnel de type "poivre</span>
+<span class="comment">%et sel" que nous observons tout en pr&eacute;servant les contours.</span>
+</pre><pre class="codeoutput">
+function [ image_egalise ] = Egalisation_Histogramme( image )
+%   Detailed explanation goes here
+    histo = imhist(image);
+    histoCum = cumsum(histo);
+    histoNormCum = histoCum/max(histoCum);
+    
+    [m,n] = size(image);
+    image_egalise = zeros(m,n);
+    
+    for i = 1:m
+        for j = 1:n
+            image_egalise(i,j) = histoNormCum(image(i,j)+1)*255;
+        end
+    end
+    
+end
+
+
+function [ image_convolue ] = Convolution( image, masque )
+%   Detailed explanation goes here
+
+    [m,n] = size(image);
+    [k,p] = size(masque);
+    
+    indexK = (k-1) /2;
+    indexP = (p-1) /2;
+    image_convolue = zeros(m,n);
+    
+    padImage = padarray(image,[indexK,indexP],0,'both');
+    
+    for i = 1:m
+        for j = 1:n
+            subMat = padImage(i:i+indexK*2,j:j+indexP*2);
+            resultMult = double(subMat) .* masque;
+            image_convolue(i,j) = sum(sum(resultMult));
+        end
+    end
+    
+
+end
+
+
+function [ image_rehaussee ] = Rehaussement_Contour( image, K )
+%   Detailed explanation goes here
+
+    masqueGaussien = 1/16 * [1,2,1;2,4,2;1,2,1];
+    
+    Ig = Convolution(image, masqueGaussien);
+    
+    masqueLaplacien = [-1,-1,-1;-1,8,-1;-1,-1,-1];
+    
+    ImgLapl = Convolution(Ig,masqueLaplacien);
+    
+    %[m,n] = size(image);
+    %image_rehaussee = zeros(m,n);
+    
+    image_rehaussee = Ig + K .* ImgLapl;
+    
+    image_rehaussee(image_rehaussee&lt;0) = 0;
+
+
+end
+
+</pre><img vspace="5" hspace="5" src="TP_01.png" alt=""> <img vspace="5" hspace="5" src="TP_02.png" alt=""> <img vspace="5" hspace="5" src="TP_03.png" alt=""> <h2 id="4">Exercice II</h2><p>Compteur de monnaie</p><pre class="codeinput"><span class="comment">%1.</span>
+
+image = imread(<span class="string">'pieces.jpg'</span>);
+imageGris = rgb2gray( image );
+imshow(imageGris);
+title(<span class="string">"Exercice 2   1. Pi&egrave;ces niveaux de gris"</span>);
+
+
+<span class="comment">%2.</span>
+
+type <span class="string">Binariser.m</span>;
+figure;
+imageBinarisee = Binariser(imageGris,250,true);
+imshow(imageBinarisee);
+title(<span class="string">"Exercice 2   2. Image binaris&eacute;e &agrave; 250 invers&eacute;"</span>);
+
+<span class="comment">%3.</span>
+se = strel(<span class="string">'disk'</span>,10);
+closeImage = imclose(imageBinarisee,se);
+figure;
+imshow(closeImage);
+title(<span class="string">"Exercice 2   3. Fermeture avec un disque de rayon 10 pixels"</span>);
+
+<span class="comment">%4</span>
+
+type <span class="string">Compter_Monnaie.m</span>;
+monnaie = Compter_Monnaie(closeImage);
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 33% 
+
+function [ imageBinariser ] = Binariser( image, seuil, modeInvert )
+    
+    [m,n] = size(image);
+    imageBinariser = zeros(m,n);
+    
+    if(modeInvert == true)
+     for i = 1:m
+        for j = 1:n
+            if(image(i,j) &gt; seuil)
+                imageBinariser(i,j) = 0;
+            else
+                imageBinariser(i,j) = 255;
+            end
+        end
+     end
+    else
+      for i = 1:m
+        for j = 1:n
+            if(image(i,j) &lt; seuil)
+                imageBinariser(i,j) = 0;
+            else
+                imageBinariser(i,j) = 255;
+            end
+        end
+      end
+    end
+
+end
+
+Warning: Image is too big to fit on screen; displaying at 33% 
+Warning: Image is too big to fit on screen; displaying at 33% 
+
+function [ sommeMonnaie ] = Compter_Monnaie( image )
+
+
+se = strel('disk',90);
+image90 = imerode(image,se);
+
+[L,nombrePiece90] = bwlabel(image90);
+
+
+se = strel('disk',110);
+image110 = imerode(image,se);
+
+[L,nombrePiece110] = bwlabel(image110);
+
+se = strel('disk',120);
+image120 = imerode(image,se);
+
+[L,nombrePiece120] = bwlabel(image120);
+
+se = strel('disk',140);
+image140 = imerode(image,se);
+
+[L,nombrePiece140] = bwlabel(image140);
+
+se = strel('disk',200);
+image200 = imerode(image,se);
+
+[L,nombrePiece200] = bwlabel(image200);
+
+somme10sous = (nombrePiece90 - nombrePiece110)*0.10;
+somme5sous = (nombrePiece110 - nombrePiece120) * 0.05;
+somme25sous = (nombrePiece120 - nombrePiece140) * 0.25;
+somme2dollars = (nombrePiece140 - nombrePiece200) * 2;
+
+sommeMonnaie = somme10sous + somme5sous + somme25sous + somme2dollars;
+
+end
+
+%10 5 25 2$
+</pre><img vspace="5" hspace="5" src="TP_04.png" alt=""> <img vspace="5" hspace="5" src="TP_05.png" alt=""> <img vspace="5" hspace="5" src="TP_06.png" alt=""> <h2 id="5">Exercice III</h2><p>Transform&eacute;e de Fourier 2D</p><pre class="codeinput"><span class="comment">%1.</span>
+imageVerticale = imread(<span class="string">'Barres_Verticales.png'</span>);
+imshow(imageVerticale);
+title(<span class="string">"Exercice 3   1. Barres Verticales"</span>);
+figure;
+imageHorizontale = imread(<span class="string">'Barres_Horizontales.png'</span>);
+imshow(imageHorizontale);
+title(<span class="string">"Exercice 3   1. Barres Horizontales"</span>);
+figure;
+imageOblique = imread(<span class="string">'Barres_Obliques.png'</span>);
+imshow(imageOblique);
+title(<span class="string">"Exercice 3   1. Barres Obliques"</span>);
+
+<span class="comment">%2.</span>
+
+VerticaleTFD = abs(fft2(imageVerticale));
+VerticaleAfterLog = log(1+fftshift(VerticaleTFD/numel(VerticaleTFD)));
+
+figure;
+imshow(VerticaleAfterLog, []);
+title(<span class="string">"Exercice 3   2. TFD Barres Verticales"</span>);
+
+HorizonTFD = abs(fft2(imageHorizontale));
+HorizonAfterLog = log(1+fftshift(HorizonTFD/numel(HorizonTFD)));
+
+figure;
+imshow(HorizonAfterLog, []);
+title(<span class="string">"Exercice 3   2. TFD Barres Horizontales"</span>);
+
+ObliqueTFD = abs(fft2(imageOblique));
+ObliqueAfterLog = log(1+fftshift(ObliqueTFD/numel(ObliqueTFD)));
+
+figure;
+imshow(ObliqueAfterLog, []);
+title(<span class="string">"Exercice 3   2. TFD Barres Obliques"</span>);
+
+<span class="comment">%3.</span>
+
+imageVerticaleRotate = imrotate(imageVerticale,70,<span class="string">'bilinear'</span>,<span class="string">'crop'</span>);
+
+VerticaleRotateTFD = abs(fft2(imageVerticaleRotate));
+
+VerticaleRotateAfterLog = log(1+fftshift(VerticaleRotateTFD/numel(VerticaleRotateTFD)));
+
+figure;
+imshow(VerticaleRotateAfterLog, []);
+title(<span class="string">"Exercice 3   3. Rotation TFD Barres Verticales"</span>);
+
+<span class="comment">%4.</span>
+<span class="comment">%La transform&eacute;e de Fourier 2D permet d'illustrer les intensit&eacute;s de l'image.</span>
+<span class="comment">%Le sens des spectres sont perpendiculaires aux lignes des images et ce</span>
+<span class="comment">%m&ecirc;me apr&egrave;s une rotation de 70 degr&eacute;s de l'image. Cela d&eacute;montre alors</span>
+<span class="comment">%qu'une rotation dans le domaine spatial provoque &eacute;galement une rotation</span>
+<span class="comment">%dans le domaine spectral.</span>
+</pre><img vspace="5" hspace="5" src="TP_07.png" alt=""> <img vspace="5" hspace="5" src="TP_08.png" alt=""> <img vspace="5" hspace="5" src="TP_09.png" alt=""> <img vspace="5" hspace="5" src="TP_10.png" alt=""> <img vspace="5" hspace="5" src="TP_11.png" alt=""> <img vspace="5" hspace="5" src="TP_12.png" alt=""> <img vspace="5" hspace="5" src="TP_13.png" alt=""> <h2 id="6">Exercice IV</h2><p>Filtrage spectral</p><pre class="codeinput"><span class="comment">%1.</span>
+imageMaillot = imread(<span class="string">'maillot.png'</span>);
+imshow(imageMaillot);
+title(<span class="string">"Exercice 4   1. Maillot original"</span>);
+
+maillotTFD = fft2(imageMaillot);
+
+maillotTFDAfterShift = fftshift(maillotTFD/numel(maillotTFD));
+
+figure;
+imshow(log(1+abs(maillotTFDAfterShift)),[]);
+title(<span class="string">"Exercice 4   1.TFD Maillot original"</span>);
+
+<span class="comment">%2.</span>
+
+figure;
+imshow(imread(<span class="string">'ResultatTFDMaillot.png'</span>));
+title(<span class="string">"Exercice 4   2. Identification des textures"</span>);
+
+<span class="comment">%3.</span>
+sizeMaillot = size(maillotTFDAfterShift);
+Pb = fspecial(<span class="string">'gaussian'</span>,sizeMaillot,500);
+Pb = Pb/max(Pb(:));
+
+
+maillotGaussianPb = maillotTFDAfterShift .* Pb;
+
+<span class="comment">%figure;</span>
+<span class="comment">%imshow(log(1+abs(maillotGaussianPb)));</span>
+<span class="comment">%title("Exercice 4   3.TFD du maillot filtr&eacute; passe-bas gaussien");</span>
+
+figure;
+IShiftMaillotPb = ifftshift(maillotGaussianPb);
+IFFTMaillotPb = ifft2(IShiftMaillotPb) * numel(IShiftMaillotPb);
+
+imshow(IFFTMaillotPb);
+title(<span class="string">"Exercice 4   3.Maillot filtr&eacute; passe-bas gaussien"</span>);
+
+
+
+<span class="comment">%4.</span>
+
+Pb = fspecial(<span class="string">'gaussian'</span>,sizeMaillot,4000);
+Pb = Pb/max(Pb(:));
+Ph = 1 - Pb;
+
+maillotGaussian = maillotTFDAfterShift .* Ph;
+
+<span class="comment">%figure;</span>
+<span class="comment">%imshow(log(1+abs(maillotGaussian)));</span>
+<span class="comment">%title("Exercice 4   4.TFD du maillot filtr&eacute; passe-haut");</span>
+
+figure;
+IShiftMaillot = ifftshift(maillotGaussian);
+IFFTMaillot = ifft2(IShiftMaillot);
+
+imshow(abs(IFFTMaillot),[]);
+title(<span class="string">"Exercice 4   4.Maillot filtr&eacute; passe-haut"</span>);
+
+
+
+<span class="comment">%5</span>
+
+imwrite(maillotTFDAfterShift,<span class="string">'TFDMaillotMatLab.png'</span>);
+TFDManche = imread(<span class="string">'TFDMancheMatLab.png'</span>);
+TFDManche = double(rgb2gray( TFDManche ));
+TFDManche = TFDManche/max(TFDManche(:));
+
+figure;
+imshow(TFDManche,[]);
+title(<span class="string">"Exercice 4   5.TFD manche du maillot(fait sous paint)"</span>);
+
+idealMaillot = maillotTFDAfterShift .* TFDManche;
+
+
+
+IShiftManche = ifftshift(idealMaillot);
+IFFTManche = ifft2(IShiftManche);
+absoluManche = abs(IFFTManche);
+tempManche = absoluManche *  (1/max(absoluManche(:))) *255;
+tempManche = Binariser(tempManche,50 ,false);
+
+
+figure;
+imshow(tempManche,[]);
+title(<span class="string">"Exercice 4   5.Manches seulement"</span>);
+
+<span class="comment">%6</span>
+
+TFDTorse = imread(<span class="string">'TFDMaillotMatLabSansTorse.png'</span>);
+TFDTorse = double(rgb2gray( TFDTorse ));
+TFDTorse = TFDTorse/max(TFDTorse(:));
+
+figure;
+imshow(TFDTorse,[]);
+title(<span class="string">"Exercice 4   6.TFD du maillot sans torse(fait sous paint)"</span>);
+
+idealMaillot = maillotTFDAfterShift .* TFDTorse;
+
+
+
+IShiftSansTorse = ifftshift(idealMaillot);
+IFFTSansTorse = ifft2(IShiftSansTorse);
+absoluSansTorse = abs(IFFTSansTorse);
+tempSansTorse = absoluSansTorse *  (1/max(absoluSansTorse(:))) *255;
+tempSansTorse = Binariser(tempSansTorse,50 ,false);
+
+
+figure;
+imshow(tempSansTorse,[]);
+title(<span class="string">"Exercice 4   6.Maillot sans torse"</span>);
+
+<span class="comment">%7</span>
+<span class="comment">% Un filtre id&eacute;al risque de faire appara&icirc;tre des artefacts dus aux</span>
+<span class="comment">% ondulations dans la transform&eacute;e de fourier. La r&eacute;ponse fr&eacute;quencielle d'un</span>
+<span class="comment">% filtre Butterworth est une gaussienne et permet donc d'&eacute;viter les</span>
+<span class="comment">% artefacts. Il est tout de m&ecirc;me &agrave; noter que plus l'ordre du filtre</span>
+<span class="comment">% Butterworth augmente, plus on se rapproche du filtre id&eacute;al.</span>
+
+<span class="comment">%8</span>
+<span class="comment">%Si l'on efface la composante moyenne de la TF, le fond blanc de l'image</span>
+<span class="comment">%(d'une fr&eacute;quence proche de 0) devient noir.</span>
+
+<span class="comment">%9</span>
+<span class="comment">% C'est un filtre passe-haut dont on fait baisser la fr&eacute;quence de coupure</span>
+</pre><img vspace="5" hspace="5" src="TP_14.png" alt=""> <img vspace="5" hspace="5" src="TP_15.png" alt=""> <img vspace="5" hspace="5" src="TP_16.png" alt=""> <img vspace="5" hspace="5" src="TP_17.png" alt=""> <img vspace="5" hspace="5" src="TP_18.png" alt=""> <img vspace="5" hspace="5" src="TP_19.png" alt=""> <img vspace="5" hspace="5" src="TP_20.png" alt=""> <img vspace="5" hspace="5" src="TP_21.png" alt=""> <img vspace="5" hspace="5" src="TP_22.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Loïc LERAT 1920881
+% Simon-Pierre DESJARDINS 1739351
+
+
+%% Nettoyage du workspace
+clear all;
+close all;
+clc;
+
+%% Exercice I
+% Réhaussement d'images
+
+image = imread('theArtist.png');
+
+type Egalisation_Histogramme;
+imageEgalisee = uint8(Egalisation_Histogramme(image));
+
+
+imshow(imageEgalisee);
+title("Exercice 1   1. Image égalisée");
+
+%2-3. Convolution
+
+type Convolution.m;
+MasqueGau = 1/90 * [1,2,1,2,1;2,4,8,4,2;1,8,18,8,1;2,4,8,4,2;1,2,1,2,1];
+imageConvo = uint8(Convolution(imageEgalisee,MasqueGau));
+
+figure;
+imshow(imageConvo);
+title("Exercice 1   2-3. Image convoluée avec masque Gaussien");
+
+%4. Rehaussement Contour
+
+figure;
+
+type Rehaussement_Contour.m;
+imageRehaussee = uint8(Rehaussement_Contour(imageConvo,1.2));
+imshow(imageRehaussee);
+title("Exercice 1   4. Contours rehaussés");
+
+%5. En rehaussant les contours, nous avons également rehaussé les
+%particules de bruits qui restaient à la suite du filtre Gaussien. Le
+%filtre médian permettrait de réduire le bruit impulsionnel de type "poivre
+%et sel" que nous observons tout en préservant les contours. 
+
+
+%% Exercice II
+% Compteur de monnaie
+%1.
+
+image = imread('pieces.jpg');
+imageGris = rgb2gray( image );
+imshow(imageGris);
+title("Exercice 2   1. Pièces niveaux de gris");
+
+
+%2.
+
+type Binariser.m;
+figure;
+imageBinarisee = Binariser(imageGris,250,true);
+imshow(imageBinarisee);
+title("Exercice 2   2. Image binarisée à 250 inversé");
+
+%3.
+se = strel('disk',10);
+closeImage = imclose(imageBinarisee,se);
+figure;
+imshow(closeImage);
+title("Exercice 2   3. Fermeture avec un disque de rayon 10 pixels");
+
+%4
+
+type Compter_Monnaie.m;
+monnaie = Compter_Monnaie(closeImage);
+
+
+%% Exercice III
+% Transformée de Fourier 2D
+
+%1.
+imageVerticale = imread('Barres_Verticales.png');
+imshow(imageVerticale);
+title("Exercice 3   1. Barres Verticales");
+figure;
+imageHorizontale = imread('Barres_Horizontales.png');
+imshow(imageHorizontale);
+title("Exercice 3   1. Barres Horizontales");
+figure;
+imageOblique = imread('Barres_Obliques.png');
+imshow(imageOblique);
+title("Exercice 3   1. Barres Obliques");
+
+%2.
+
+VerticaleTFD = abs(fft2(imageVerticale));
+VerticaleAfterLog = log(1+fftshift(VerticaleTFD/numel(VerticaleTFD)));
+
+figure;
+imshow(VerticaleAfterLog, []);
+title("Exercice 3   2. TFD Barres Verticales");
+
+HorizonTFD = abs(fft2(imageHorizontale));
+HorizonAfterLog = log(1+fftshift(HorizonTFD/numel(HorizonTFD)));
+
+figure;
+imshow(HorizonAfterLog, []);
+title("Exercice 3   2. TFD Barres Horizontales");
+
+ObliqueTFD = abs(fft2(imageOblique));
+ObliqueAfterLog = log(1+fftshift(ObliqueTFD/numel(ObliqueTFD)));
+
+figure;
+imshow(ObliqueAfterLog, []);
+title("Exercice 3   2. TFD Barres Obliques");
+
+%3.
+
+imageVerticaleRotate = imrotate(imageVerticale,70,'bilinear','crop');
+
+VerticaleRotateTFD = abs(fft2(imageVerticaleRotate));
+
+VerticaleRotateAfterLog = log(1+fftshift(VerticaleRotateTFD/numel(VerticaleRotateTFD)));
+
+figure;
+imshow(VerticaleRotateAfterLog, []);
+title("Exercice 3   3. Rotation TFD Barres Verticales");
+
+%4.
+%La transformée de Fourier 2D permet d'illustrer les intensités de l'image.
+%Le sens des spectres sont perpendiculaires aux lignes des images et ce
+%même après une rotation de 70 degrés de l'image. Cela démontre alors
+%qu'une rotation dans le domaine spatial provoque également une rotation
+%dans le domaine spectral.
+
+%% Exercice IV
+% Filtrage spectral
+
+%1.
+imageMaillot = imread('maillot.png');
+imshow(imageMaillot);
+title("Exercice 4   1. Maillot original");
+
+maillotTFD = fft2(imageMaillot);
+
+maillotTFDAfterShift = fftshift(maillotTFD/numel(maillotTFD));
+
+figure;
+imshow(log(1+abs(maillotTFDAfterShift)),[]);
+title("Exercice 4   1.TFD Maillot original");
+
+%2.
+
+figure;
+imshow(imread('ResultatTFDMaillot.png'));
+title("Exercice 4   2. Identification des textures");
+
+%3.
+sizeMaillot = size(maillotTFDAfterShift);
+Pb = fspecial('gaussian',sizeMaillot,500);
+Pb = Pb/max(Pb(:));
+
+
+maillotGaussianPb = maillotTFDAfterShift .* Pb;
+
+%figure;
+%imshow(log(1+abs(maillotGaussianPb)));
+%title("Exercice 4   3.TFD du maillot filtré passe-bas gaussien");
+
+figure;
+IShiftMaillotPb = ifftshift(maillotGaussianPb);
+IFFTMaillotPb = ifft2(IShiftMaillotPb) * numel(IShiftMaillotPb);
+
+imshow(IFFTMaillotPb);
+title("Exercice 4   3.Maillot filtré passe-bas gaussien");
+
+
+
+%4. 
+
+Pb = fspecial('gaussian',sizeMaillot,4000);
+Pb = Pb/max(Pb(:));
+Ph = 1 - Pb;
+
+maillotGaussian = maillotTFDAfterShift .* Ph;
+
+%figure;
+%imshow(log(1+abs(maillotGaussian)));
+%title("Exercice 4   4.TFD du maillot filtré passe-haut");
+
+figure;
+IShiftMaillot = ifftshift(maillotGaussian);
+IFFTMaillot = ifft2(IShiftMaillot);
+
+imshow(abs(IFFTMaillot),[]);
+title("Exercice 4   4.Maillot filtré passe-haut");
+
+
+
+%5
+
+imwrite(maillotTFDAfterShift,'TFDMaillotMatLab.png');
+TFDManche = imread('TFDMancheMatLab.png');
+TFDManche = double(rgb2gray( TFDManche ));
+TFDManche = TFDManche/max(TFDManche(:));
+
+figure;
+imshow(TFDManche,[]);
+title("Exercice 4   5.TFD manche du maillot(fait sous paint)");
+
+idealMaillot = maillotTFDAfterShift .* TFDManche;
+
+
+
+IShiftManche = ifftshift(idealMaillot);
+IFFTManche = ifft2(IShiftManche);
+absoluManche = abs(IFFTManche);
+tempManche = absoluManche *  (1/max(absoluManche(:))) *255;
+tempManche = Binariser(tempManche,50 ,false);
+
+
+figure;
+imshow(tempManche,[]);
+title("Exercice 4   5.Manches seulement");
+
+%6
+
+TFDTorse = imread('TFDMaillotMatLabSansTorse.png');
+TFDTorse = double(rgb2gray( TFDTorse ));
+TFDTorse = TFDTorse/max(TFDTorse(:));
+
+figure;
+imshow(TFDTorse,[]);
+title("Exercice 4   6.TFD du maillot sans torse(fait sous paint)");
+
+idealMaillot = maillotTFDAfterShift .* TFDTorse;
+
+
+
+IShiftSansTorse = ifftshift(idealMaillot);
+IFFTSansTorse = ifft2(IShiftSansTorse);
+absoluSansTorse = abs(IFFTSansTorse);
+tempSansTorse = absoluSansTorse *  (1/max(absoluSansTorse(:))) *255;
+tempSansTorse = Binariser(tempSansTorse,50 ,false);
+
+
+figure;
+imshow(tempSansTorse,[]);
+title("Exercice 4   6.Maillot sans torse");
+
+%7 
+% Un filtre idéal risque de faire apparaître des artefacts dus aux
+% ondulations dans la transformée de fourier. La réponse fréquencielle d'un
+% filtre Butterworth est une gaussienne et permet donc d'éviter les
+% artefacts. Il est tout de même à noter que plus l'ordre du filtre
+% Butterworth augmente, plus on se rapproche du filtre idéal.
+
+%8
+%Si l'on efface la composante moyenne de la TF, le fond blanc de l'image
+%(d'une fréquence proche de 0) devient noir.
+
+%9
+% C'est un filtre passe-haut dont on fait baisser la fréquence de coupure
+##### SOURCE END #####
+--></body></html>

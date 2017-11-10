@@ -12,31 +12,24 @@ clc;
 
 image = imread('theArtist.png');
 
-type Egalisation_Histogramme;
 imageEgalisee = uint8(Egalisation_Histogramme(image));
 
-
 imshow(imageEgalisee);
-title("Exercice 1   1. Image égalisée");
 
 %2-3. Convolution
 
-type Convolution.m;
 MasqueGau = 1/90 * [1,2,1,2,1;2,4,8,4,2;1,8,18,8,1;2,4,8,4,2;1,2,1,2,1];
 imageConvo = uint8(Convolution(imageEgalisee,MasqueGau));
 
 figure;
 imshow(imageConvo);
-title("Exercice 1   2-3. Image convoluée avec masque Gaussien");
 
 %4. Rehaussement Contour
 
 figure;
 
-type Rehaussement_Contour.m;
 imageRehaussee = uint8(Rehaussement_Contour(imageConvo,1.2));
 imshow(imageRehaussee);
-title("Exercice 1   4. Contours rehaussés");
 
 %5. En rehaussant les contours, nous avons également rehaussé les
 %particules de bruits qui restaient à la suite du filtre Gaussien. Le
@@ -51,27 +44,22 @@ title("Exercice 1   4. Contours rehaussés");
 image = imread('pieces.jpg');
 imageGris = rgb2gray( image );
 imshow(imageGris);
-title("Exercice 2   1. Pièces niveaux de gris");
 
 
 %2.
 
-type Binariser.m;
 figure;
 imageBinarisee = Binariser(imageGris,250,true);
 imshow(imageBinarisee);
-title("Exercice 2   2. Image binarisée à 250 inversé");
 
 %3.
 se = strel('disk',10);
 closeImage = imclose(imageBinarisee,se);
 figure;
 imshow(closeImage);
-title("Exercice 2   3. Fermeture avec un disque de rayon 10 pixels");
 
 %4
 
-type Compter_Monnaie.m;
 monnaie = Compter_Monnaie(closeImage);
 
 
@@ -81,38 +69,35 @@ monnaie = Compter_Monnaie(closeImage);
 %1.
 imageVerticale = imread('Barres_Verticales.png');
 imshow(imageVerticale);
-title("Exercice 3   1. Barres Verticales");
 figure;
 imageHorizontale = imread('Barres_Horizontales.png');
 imshow(imageHorizontale);
-title("Exercice 3   1. Barres Horizontales");
 figure;
 imageOblique = imread('Barres_Obliques.png');
 imshow(imageOblique);
-title("Exercice 3   1. Barres Obliques");
 
 %2.
 
 VerticaleTFD = abs(fft2(imageVerticale));
+
 VerticaleAfterLog = log(1+fftshift(VerticaleTFD/numel(VerticaleTFD)));
 
 figure;
 imshow(VerticaleAfterLog, []);
-title("Exercice 3   2. TFD Barres Verticales");
 
 HorizonTFD = abs(fft2(imageHorizontale));
+
 HorizonAfterLog = log(1+fftshift(HorizonTFD/numel(HorizonTFD)));
 
 figure;
 imshow(HorizonAfterLog, []);
-title("Exercice 3   2. TFD Barres Horizontales");
 
 ObliqueTFD = abs(fft2(imageOblique));
+
 ObliqueAfterLog = log(1+fftshift(ObliqueTFD/numel(ObliqueTFD)));
 
 figure;
 imshow(ObliqueAfterLog, []);
-title("Exercice 3   2. TFD Barres Obliques");
 
 %3.
 
@@ -124,9 +109,9 @@ VerticaleRotateAfterLog = log(1+fftshift(VerticaleRotateTFD/numel(VerticaleRotat
 
 figure;
 imshow(VerticaleRotateAfterLog, []);
-title("Exercice 3   3. Rotation TFD Barres Verticales");
 
 %4.
+%TODO TODO
 %La transformée de Fourier 2D permet d'illustrer les intensités de l'image.
 %Le sens des spectres sont perpendiculaires aux lignes des images et ce
 %même après une rotation de 70 degrés de l'image. Cela démontre alors
@@ -139,7 +124,6 @@ title("Exercice 3   3. Rotation TFD Barres Verticales");
 %1.
 imageMaillot = imread('maillot.png');
 imshow(imageMaillot);
-title("Exercice 4   1. Maillot original");
 
 maillotTFD = fft2(imageMaillot);
 
@@ -147,13 +131,11 @@ maillotTFDAfterShift = fftshift(maillotTFD/numel(maillotTFD));
 
 figure;
 imshow(log(1+abs(maillotTFDAfterShift)),[]);
-title("Exercice 4   1.TFD Maillot original");
 
 %2.
 
 figure;
 imshow(imread('ResultatTFDMaillot.png'));
-title("Exercice 4   2. Identification des textures");
 
 %3.
 sizeMaillot = size(maillotTFDAfterShift);
@@ -163,16 +145,14 @@ Pb = Pb/max(Pb(:));
 
 maillotGaussianPb = maillotTFDAfterShift .* Pb;
 
-%figure;
-%imshow(log(1+abs(maillotGaussianPb)));
-%title("Exercice 4   3.TFD du maillot filtré passe-bas gaussien");
+figure;
+imshow(log(1+abs(maillotGaussianPb)));
 
 figure;
 IShiftMaillotPb = ifftshift(maillotGaussianPb);
 IFFTMaillotPb = ifft2(IShiftMaillotPb) * numel(IShiftMaillotPb);
 
 imshow(IFFTMaillotPb);
-title("Exercice 4   3.Maillot filtré passe-bas gaussien");
 
 
 
@@ -186,14 +166,12 @@ maillotGaussian = maillotTFDAfterShift .* Ph;
 
 %figure;
 %imshow(log(1+abs(maillotGaussian)));
-%title("Exercice 4   4.TFD du maillot filtré passe-haut");
 
 figure;
 IShiftMaillot = ifftshift(maillotGaussian);
 IFFTMaillot = ifft2(IShiftMaillot);
 
 imshow(abs(IFFTMaillot),[]);
-title("Exercice 4   4.Maillot filtré passe-haut");
 
 
 
@@ -204,9 +182,6 @@ TFDManche = imread('TFDMancheMatLab.png');
 TFDManche = double(rgb2gray( TFDManche ));
 TFDManche = TFDManche/max(TFDManche(:));
 
-figure;
-imshow(TFDManche,[]);
-title("Exercice 4   5.TFD manche du maillot(fait sous paint)");
 
 idealMaillot = maillotTFDAfterShift .* TFDManche;
 
@@ -221,7 +196,6 @@ tempManche = Binariser(tempManche,50 ,false);
 
 figure;
 imshow(tempManche,[]);
-title("Exercice 4   5.Manches seulement");
 
 %6
 
@@ -229,9 +203,6 @@ TFDTorse = imread('TFDMaillotMatLabSansTorse.png');
 TFDTorse = double(rgb2gray( TFDTorse ));
 TFDTorse = TFDTorse/max(TFDTorse(:));
 
-figure;
-imshow(TFDTorse,[]);
-title("Exercice 4   6.TFD du maillot sans torse(fait sous paint)");
 
 idealMaillot = maillotTFDAfterShift .* TFDTorse;
 
@@ -246,7 +217,6 @@ tempSansTorse = Binariser(tempSansTorse,50 ,false);
 
 figure;
 imshow(tempSansTorse,[]);
-title("Exercice 4   6.Maillot sans torse");
 
 %7 
 % Un filtre idéal risque de faire apparaître des artefacts dus aux
@@ -256,8 +226,3 @@ title("Exercice 4   6.Maillot sans torse");
 % Butterworth augmente, plus on se rapproche du filtre idéal.
 
 %8
-%Si l'on efface la composante moyenne de la TF, le fond blanc de l'image
-%(d'une fréquence proche de 0) devient noir.
-
-%9
-% C'est un filtre passe-haut dont on fait baisser la fréquence de coupure
