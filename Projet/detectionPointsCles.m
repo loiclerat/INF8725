@@ -6,6 +6,22 @@ counterFaibleContraste = 0;
 counterPointsArretes = 0;
 indexListPoints = 0;
 
+magnitude = zeros(m,n,o);
+angle = zeros(m,n,o);
+
+%orientation assignment
+for z = 2:o-1
+    for x = 2:m-1
+        for y = 2:n-1
+            magnitude(x,y,z) = sqrt((DoG(x+1,y,z) - DoG(x-1,y,z))^2 + (DoG(x,y+1,z) - DoG(x,y-1,z))^2);
+            angle(x,y,z) = atan((DoG(x,y+1,z) - DoG(x,y-1,z))/(DoG(x+1,y,z) - DoG(x-1,y,z)));
+        end
+    end
+end
+
+%TODO histogramme avec les orientations??
+
+
 for z = 2:o-1
     
     Gx = [1;-1];
@@ -56,7 +72,7 @@ for z = 2:o-1
                     ratio = ((r_courb_principale+1)^2)/r_courb_principale;
                     if (TraceSurDet < ratio)
                         indexListPoints = indexListPoints +1;
-                        pointExtreme = [x*resolution_octave;y*resolution_octave;z];
+                        pointExtreme = [x*resolution_octave;y*resolution_octave; z; magnitude(x,y,z); angle(x,y,z)];
                         liste_pts{indexListPoints} = pointExtreme;
                     else
                         counterPointsArretes = counterPointsArretes+1;

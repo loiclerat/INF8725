@@ -24,4 +24,12 @@ for i = 1:size(listOctaves)
     listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.03 , 10, i );
 end 
 
-%TODO les questions partie 2.2
+%Q1 TODO Rapport comme on fait ?  Dxx = imfilter(imfilter(DoG(:,:,o), Gx, 'symmetric','same'), Gx, 'symmetric','same');
+
+%Q2 TODO Rapport compteurs sont fait , reste qu'à les mettre dans un tableau par octave
+
+%Q3 TODO Rapport points dans listPoints selon le {i}
+
+%Q4 Joindre les .mat
+
+%Q5 TODO tracer les lieux
