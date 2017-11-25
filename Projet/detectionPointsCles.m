@@ -72,7 +72,7 @@ for z = 2:o-1
                     ratio = ((r_courb_principale+1)^2)/r_courb_principale;
                     if (TraceSurDet < ratio)
                         indexListPoints = indexListPoints +1;
-                        pointExtreme = [x*resolution_octave;y*resolution_octave; z; magnitude(x,y,z); angle(x,y,z)];
+                        pointExtreme = [x*resolution_octave,y*resolution_octave, z, magnitude(x,y,z), angle(x,y,z)];
                         liste_pts{indexListPoints} = pointExtreme;
                     else
                         counterPointsArretes = counterPointsArretes+1;
