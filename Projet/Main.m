@@ -34,15 +34,29 @@ for i = 1:totalSizeListPoints
     totalSizeListPointsAtI = w*x;
     for j = 1:totalSizeListPointsAtI
         centerY = listPoints{i}{j}(1); % Je pense que nos x et Y sont inversés, j'ai du les inverser ici pour avoir des positions qui font du sens
-        centerX = listPoints{i}{j}(2);  %TODO reste a rajouter les couleurs 
-        octave = listPoints{i}{j}(3);
+        centerX = listPoints{i}{j}(2);
+        numeroImage = listPoints{i}{j}(3); %Dans le même octave, correspond au sigma, poser question si couleur dépend de ça
         magnitude = listPoints{i}{j}(4);
         angle = listPoints{i}{j}(5);
 
         radius = magnitude*1000;
-
-        rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1]);
-        axis square;
+        
+        x2=centerX+(radius*cos(angle));
+        y2=centerY+(radius*sin(angle));
+        
+        if i == 1
+            rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'r' );
+            line([centerX,x2],[centerY,y2], 'Color', 'r','LineWidth',2);
+        elseif i == 2
+             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'g' );
+             line([centerX,x2],[centerY,y2], 'Color', 'g','LineWidth',2);
+        elseif i == 3
+             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'b' );
+             line([centerX,x2],[centerY,y2], 'Color', 'b','LineWidth',2);
+        else %find a better way if more than 3 octaves
+             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'k' );
+             line([centerX,x2],[centerY,y2], 'Color', 'k','LineWidth',2);
+        end
     end
 end
 
@@ -56,4 +70,5 @@ end
 
 %Q4 Joindre les .mat
 
-%Q5 TODO tracer les lieux
+%Q5 Done
+
