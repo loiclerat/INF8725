@@ -10,11 +10,11 @@ clc;
 %% 
 %Partie 2.1 : Construction des différences de Gaussiennes
 
-image = rgb2gray(imread('droite.jpg'));
+image = rgb2gray(imread('gauche.jpg'));
 image = double(image)/255;
 [listDoG, listOctaves, vectSigma] = differenceDeGaussiennes(image, 3, 3);
 
-%TODO mettre legende titre echelle pour pyramide gaussienne et differences
+%TODO 
 %Q1 et Q2
 %Laplacian?
 
@@ -22,7 +22,7 @@ image = double(image)/255;
 totalSizeListOctaves = r*s;
 %Partie 2.2 : Détection des points clés
 for i = 1:totalSizeListOctaves-1
-    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.03 , 10, i );
+    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.04 , 10, i );
 end 
 
 imshow(image);
@@ -39,7 +39,7 @@ for i = 1:totalSizeListPoints
         magnitude = listPoints{i}{j}(4);
         angle = listPoints{i}{j}(5);
 
-        radius = magnitude*1000;
+        radius = magnitude*2000;
         
         x2=centerX+(radius*cos(angle));
         y2=centerY+(radius*sin(angle));
