@@ -14,15 +14,14 @@ image = rgb2gray(imread('gauche.jpg'));
 image = double(image)/255;
 [listDoG, listOctaves, vectSigma] = differenceDeGaussiennes(image, 3, 3);
 
-%TODO 
-%Q1 et Q2
-%Laplacian?
+
+%Partie 2.2 : Détection des points clés
 
 [r,s] = size(listOctaves);
 totalSizeListOctaves = r*s;
-%Partie 2.2 : Détection des points clés
+
 for i = 1:totalSizeListOctaves-1
-    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.04 , 10, i );
+    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.03 , 10, i );
 end 
 
 imshow(image);
@@ -71,4 +70,14 @@ end
 %Q4 Joindre les .mat
 
 %Q5 Done
+
+%===================
+% A Demander :
+%   - Comment construire les histogrammes d'orientation
+%        - Quel voisinnage / quelle zone 16*16 px ?
+%        - Besoin de recalculer gaussiennes ?
+%        - Comment pondérer ?   
+%   - De quoi dépendent les tailles et couleurs des cercles ?
+%   - Comment faire la rotation (descripteurs) ?
+%   - Q1 (Hessienne)
 

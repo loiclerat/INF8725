@@ -1,4 +1,8 @@
 function [ liste_pts ] = detectionPointsCles( DoG, octave, sigma, seuil_contraste, r_courb_principale, resolution_octave )
+% Détecte les extrema de chaque DoG d'un octave et élimine les points de faible
+% contraste ainsi que les points d'arêtes. 
+% Assigne une orientation aux points clés ainsi déterminés
+
 
 [m,n,o] = size(DoG(:,:,:));
 indexListPoints = 0;
@@ -12,6 +16,7 @@ magnitude = zeros(m,n,o);
 angle = zeros(m,n,o);
 
 %Orientation assignment
+%TODO : faire sur Gaussiennes, pas DoG ?
 for z = 2:o-1
     for x = 2:m-1
         for y = 2:n-1
@@ -21,9 +26,7 @@ for z = 2:o-1
     end
 end
 
-%TODO histogramme avec les orientations??
-
-
+%Pour chaque DoG
 for z = 2:o-1
     
     Gx = [1;-1];
@@ -33,6 +36,7 @@ for z = 2:o-1
     Dxx = imfilter(imfilter(DoG(:,:,o), Gx, 'symmetric','same'), Gx, 'symmetric','same');
     Dxy = imfilter(imfilter(DoG(:,:,o), Gx, 'symmetric','same'), Gy, 'symmetric','same');
     Dyy = imfilter(imfilter(DoG(:,:,o), Gy, 'symmetric','same'), Gy, 'symmetric','same');
+    
     
     for x = 2:m-1
         for y = 2:n-1
@@ -89,7 +93,18 @@ for z = 2:o-1
                     %Elimination des points d'arrêtes
                     if (TraceSurDet < ratio)
                         indexListPoints = indexListPoints +1;
+                        
+                        %Orientation
+                        % TODO histogramme avec les orientations??
+                        %   - Quel zone prendre ?
+                        %   - Comment pondérer ?
+                        %   - 
+                        
+                        %Assignation orientation / création nouveau
+                        %keypoint si besoin
+                        
                         pointExtreme = [x*resolution_octave,y*resolution_octave, z, magnitude(x,y,z), angle(x,y,z)];
+                        
                         liste_pts{indexListPoints} = pointExtreme;
                     else
                         counterPointsArretes = counterPointsArretes+1;

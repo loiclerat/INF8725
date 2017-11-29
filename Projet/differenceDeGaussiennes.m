@@ -27,6 +27,7 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
         listDoGPerOcta = zeros(m,n,s+2);
         
         % Construction de la pyramide
+        %figure;
         for i = 1:s+3
             sigma = vectSigma(i);
             
@@ -39,19 +40,21 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
             listGauss(:,:,i) = L;
             
             % Affichage de la pyramide
-           % figure;
+            %subplot(3,2,i);
             %imshow(L);
             %title(['sigma = ' num2str(sigma)]);
             %axis on;
         end
 
         % Différence de Gaussiennes
+        %figure;
         for i = 1:s+2
             listDoGPerOcta(:,:,i) = listGauss(:,:,i+1) - listGauss(:,:,i);
             
-            % Affichage des DoG
-            %figure;
+            %Affichage des DoG
+            %subplot(3,2,i);
             %imshow(listDoGPerOcta(:,:,i),[]);
+            %axis on;
         end
         
         listDoG{o} = listDoGPerOcta;
