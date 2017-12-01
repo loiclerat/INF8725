@@ -8,8 +8,8 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
     sigma0 = 1.6;
     k = 2^(1/s);
     
-    vectSigma = zeros(s+3);
-    listOctaves{1} = image_initiale;
+    %vectSigma = zeros(s+3);
+    imageDepart{1} = image_initiale;
     
     % Calcule des sigmas
     for i = 1:s+3
@@ -17,12 +17,13 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
             vectSigma(i) = sigma;
     end
     
+    
     % Pour chaque octave...
     for o = 1:nb_octave
         %figure;
-        %imshow(listOctaves{o});
+        %imshow(imageDepart{o});
         
-        [m,n] = size(listOctaves{o});
+        [m,n] = size(imageDepart{o});
         listGauss = zeros(m,n,s+3);
         listDoGPerOcta = zeros(m,n,s+2);
         
@@ -36,7 +37,7 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
             G = fspecial('gaussian', [u,u], sigma);
 
             %Application du filtre
-            L = imfilter(listOctaves{o}, G, 'symmetric','same');
+            L = imfilter(imageDepart{o}, G, 'symmetric','same');
             listGauss(:,:,i) = L;
             
             % Affichage de la pyramide
@@ -46,6 +47,7 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
             %axis on;
         end
 
+        
         % Différence de Gaussiennes
         %figure;
         for i = 1:s+2
@@ -57,8 +59,9 @@ function [ listDoG, listOctaves, vectSigma ] = differenceDeGaussiennes( image_in
             %axis on;
         end
         
+        listOctaves{o} = listGauss;
         listDoG{o} = listDoGPerOcta;
-        listOctaves{o+1} = listGauss(1:2:end,1:2:end,s+1);
+        imageDepart{o+1} = listGauss(1:2:end,1:2:end,s+1);
         
     end
 end

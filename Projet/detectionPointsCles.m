@@ -5,6 +5,8 @@ function [ liste_pts ] = detectionPointsCles( DoG, octave, sigma, seuil_contrast
 
 
 [m,n,o] = size(DoG(:,:,:));
+
+
 indexListPoints = 0;
 
 % Compteurs
@@ -16,15 +18,15 @@ magnitude = zeros(m,n,o);
 angle = zeros(m,n,o);
 
 %Orientation assignment
-%TODO : faire sur Gaussiennes, pas DoG ?
-for z = 2:o-1
+for z = 1:o+1
     for x = 2:m-1
         for y = 2:n-1
-            magnitude(x,y,z) = sqrt((DoG(x+1,y,z) - DoG(x-1,y,z))^2 + (DoG(x,y+1,z) - DoG(x,y-1,z))^2);
-            angle(x,y,z) = atan((DoG(x,y+1,z) - DoG(x,y-1,z))/(DoG(x+1,y,z) - DoG(x-1,y,z)));
+            magnitude(x,y,z) = sqrt((octave(x+1,y,z) - octave(x-1,y,z))^2 + (octave(x,y+1,z) - octave(x,y-1,z))^2);
+            angle(x,y,z) = atan((octave(x,y+1,z) - octave(x,y-1,z))/(octave(x+1,y,z) - octave(x-1,y,z)));
         end
     end
 end
+
 
 %Pour chaque DoG
 for z = 2:o-1
@@ -92,20 +94,61 @@ for z = 2:o-1
                     
                     %Elimination des points d'arrêtes
                     if (TraceSurDet < ratio)
-                        indexListPoints = indexListPoints +1;
-                        
-                        %Orientation
-                        % TODO histogramme avec les orientations??
-                        %   - Quel zone prendre ?
-                        %   - Comment pondérer ?
-                        %   - 
+
+                  
                         
                         %Assignation orientation / création nouveau
                         %keypoint si besoin
                         
-                        pointExtreme = [x*resolution_octave,y*resolution_octave, z, magnitude(x,y,z), angle(x,y,z)];
+                        u = ceil(6*sigma(z));
+                        if mod(u,2) == 0
+                            u = u+1;
+                        end
                         
-                        liste_pts{indexListPoints} = pointExtreme;
+                        % Création du filtre Gaussien
+                        G = fspecial('gaussian', [u,u], sigma(z) * 1.5);
+                        
+                        % Fenêtre 
+                        
+                        indexXMinFen = uint16(x-floor(u/2));
+                        indexXMaxFen = uint16(x+floor(u/2));
+                        indexYMinFen = uint16(y-floor(u/2));
+                        indexYMaxFen = uint16(y+floor(u/2));
+                        
+                        if indexXMinFen > 0 && indexXMaxFen < m-1 && indexYMinFen > 0 && indexYMaxFen < n-1
+                        
+                            fenetreMagn = magnitude(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, z);
+                            fenetreAngle = angle(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, z);
+
+
+
+                            fenetreMagnPondere = G .* fenetreMagn;
+
+                            [a,b] = size(fenetreAngle);
+                            histo = zeros(1,36);
+
+                            % Création de l'histogramme
+                            for i = 1:a
+                                for j = 1:b
+                                    angleDeg =  rad2deg(fenetreAngle(i,j));
+                                    moduloAngle = mod(angleDeg,360);
+                                    intervalleAngle = moduloAngle/10;
+                                    ceilIntervalle = floor(intervalleAngle) +1;
+                                    indexHisto = uint8(ceilIntervalle);
+                                    histo(indexHisto) = histo(indexHisto) + fenetreMagnPondere(i,j);
+                                end
+                            end
+
+                            for i = 1:36
+                                if histo(i) >= 0.8*max(histo)
+                                    pointExtreme = [x*resolution_octave,y*resolution_octave, sigma(z), i*10];
+                                    indexListPoints = indexListPoints +1;
+                                    liste_pts{indexListPoints} = pointExtreme;
+                                end
+                            end
+                            
+                        end
+
                     else
                         counterPointsArretes = counterPointsArretes+1;
                     end

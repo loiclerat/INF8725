@@ -20,8 +20,8 @@ image = double(image)/255;
 [r,s] = size(listOctaves);
 totalSizeListOctaves = r*s;
 
-for i = 1:totalSizeListOctaves-1
-    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma(i), 0.03 , 10, i );
+for i = 1:totalSizeListOctaves
+    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma, 0.04 , 10, i );
 end 
 
 imshow(image);
@@ -34,14 +34,16 @@ for i = 1:totalSizeListPoints
     for j = 1:totalSizeListPointsAtI
         centerY = listPoints{i}{j}(1); % Je pense que nos x et Y sont inversés, j'ai du les inverser ici pour avoir des positions qui font du sens
         centerX = listPoints{i}{j}(2);
-        numeroImage = listPoints{i}{j}(3); %Dans le même octave, correspond au sigma, poser question si couleur dépend de ça
-        magnitude = listPoints{i}{j}(4);
-        angle = listPoints{i}{j}(5);
+        sigmaPoint = listPoints{i}{j}(3);
+        %magnitude = listPoints{i}{j}(4);
+        angle = listPoints{i}{j}(4);
 
-        radius = magnitude*2000;
+        radius = sigmaPoint*10;
         
-        x2=centerX+(radius*cos(angle));
-        y2=centerY+(radius*sin(angle));
+        x2=centerX+(radius*cos(deg2rad(angle)));
+        y2=centerY+(radius*sin(deg2rad(angle)));
+        
+        %TODO 
         
         if i == 1
             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'r' );
@@ -59,7 +61,7 @@ for i = 1:totalSizeListPoints
     end
 end
 
-
+%descriptionPointsCles (**,listeOctave{i},listeKeyPoints{i}
 
 %Q1 TODO Rapport comme on fait ?  Dxx = imfilter(imfilter(DoG(:,:,o), Gx, 'symmetric','same'), Gx, 'symmetric','same');
 
@@ -72,12 +74,7 @@ end
 %Q5 Done
 
 %===================
-% A Demander :
-%   - Comment construire les histogrammes d'orientation
-%        - Quel voisinnage / quelle zone 16*16 px ?
-%        - Besoin de recalculer gaussiennes ?
-%        - Comment pondérer ?   
-%   - De quoi dépendent les tailles et couleurs des cercles ?
+% A Demander :  
 %   - Comment faire la rotation (descripteurs) ?
 %   - Q1 (Hessienne)
 
