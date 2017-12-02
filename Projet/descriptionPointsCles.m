@@ -1,37 +1,36 @@
-function [ matDescripteurs ] = descriptionPointsCles(image_initiale, listOctaves, listKeypoints)
+function [ matDescripteurs ] = descriptionPointsCles(listOctaves, listKeyPoints)
 % Retourne une matrice contenant tous les descripteurs créés à partir des
 % points clés
 
-[m,n,o] = size(image_initiale(:,:,:));
+[m,n,o] = size(listOctaves(:,:,:));
 
 magnitude = zeros(m,n,o);
 angle = zeros(m,n,o);
 
+nbDescripteurs = 0;
+
 %Orientation assignment
-for z = 1:o+1
+for z = 1:o
     for x = 2:m-1
         for y = 2:n-1
-            magnitude(x,y,z) = sqrt((octave(x+1,y,z) - octave(x-1,y,z))^2 + (octave(x,y+1,z) - octave(x,y-1,z))^2);
-            angle(x,y,z) = atan((octave(x,y+1,z) - octave(x,y-1,z))/(octave(x+1,y,z) - octave(x-1,y,z)));
+            magnitude(x,y,z) = sqrt((listOctaves(x+1,y,z) - listOctaves(x-1,y,z))^2 + (listOctaves(x,y+1,z) - listOctaves(x,y-1,z))^2);
+            angle(x,y,z) = atan((listOctaves(x,y+1,z) - listOctaves(x,y-1,z))/(listOctaves(x+1,y,z) - listOctaves(x-1,y,z)));
         end
     end
 end
 
-[t,u] = size(listKeypoints);
+[t,u] = size(listKeyPoints);
 totalSizeListKeyPoints = t*u;
 
-for z = 1:size(totalSizeListKeyPoints)
+for z = 1:totalSizeListKeyPoints
     
-    sigma = listKeyPoints{z}(3);
-    u = 8+1;
-    %if mod(u,2) == 0
-     %   u = u+1;
-    %end
+    sigmaIndex = listKeyPoints{z}(3);
+    u = 17;
 
     % Création du filtre Gaussien
-    G = fspecial('gaussian', [u,u],8); %sigma x 1.5 ? or 8
+    G = fspecial('gaussian', [u,u],u/2);
 
-    % Fenêtre 
+    % Fenêtre de 16x16px autour du point clé (17x17px)
     x = listKeyPoints{z}(1);
     y = listKeyPoints{z}(2);
     
@@ -42,28 +41,52 @@ for z = 1:size(totalSizeListKeyPoints)
 
     if indexXMinFen > 0 && indexXMaxFen < m-1 && indexYMinFen > 0 && indexYMaxFen < n-1
 
-        fenetreMagn = magnitude(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, z);
-        fenetreAngle = angle(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, z);
-
-
-
+        fenetreMagn = magnitude(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, sigmaIndex);
+        fenetreAngle = angle(indexXMinFen:indexXMaxFen, indexYMinFen:indexYMaxFen, sigmaIndex);
+        
+        % Rotation du système pour garantir l'invariance à la rotation
+        fenetreAngleDeg(:,:) = rad2deg(fenetreAngle(:,:)); 
+        fenetreAngleDegRot(:,:) = fenetreAngleDeg(:,:) - listKeyPoints{z}(4);
+                
+        % Pondération des magnitudes par la gaussienne
         fenetreMagnPondere = G .* fenetreMagn;
-
-        [a,b] = size(fenetreAngle);
-        histo = zeros(1,8);
-
-        % Création de l'histogramme
-        for i = 1:a
-            for j = 1:b
-                angleDeg =  rad2deg(fenetreAngle(i,j));
-                moduloAngle = mod(angleDeg,360);
-                intervalleAngle = moduloAngle/45;
-                ceilIntervalle = floor(intervalleAngle) +1;
-                indexHisto = uint8(ceilIntervalle);
-                histo(indexHisto) = histo(indexHisto) + fenetreMagnPondere(i,j);
+        
+        % Création d'un histogramme pour chaque sous-zone de 4x4 pixels 
+        listHisto = [];
+        for k = 0:3
+            for l = 0:3
+                histo = zeros(1,8);
+                for i = 1:4
+                    for j = 1:4
+                        moduloAngle = mod(fenetreAngleDegRot(k*4+i,l*4+j),360);
+                        intervalleAngle = moduloAngle/45;
+                        ceilIntervalle = floor(intervalleAngle) +1;
+                        indexHisto = uint8(ceilIntervalle);
+                        histo(indexHisto) = histo(indexHisto) + fenetreMagnPondere(k*4+i,l*4+j);
+                    end
+                end
+                listHisto = [listHisto histo];
             end
         end
+        % Normalisation des 16 histogrammes
+        listHistoNorm = listHisto/max(listHisto);
+        % Seuillage à 0.2
+        for i = 1:size(listHisto)
+            if listHistoNorm(i) > 0.2
+                listHistoNorm(i) = 0.2;
+            end
+        end
+        % Normalisation
+        listHistoNormPlafond = listHistoNorm/max(listHistoNorm);
+        
+        % Création du descripteur
+        nbDescripteurs = nbDescripteurs + 1;
+        matDescripteurs{nbDescripteurs} = [x y listHistoNormPlafond];
     end
+end
+
+if nbDescripteurs == 0
+    matDescripteurs = [];
 end
 
 

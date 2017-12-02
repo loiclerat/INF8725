@@ -141,7 +141,7 @@ for z = 2:o-1
 
                             for i = 1:36
                                 if histo(i) >= 0.8*max(histo)
-                                    pointExtreme = [x*resolution_octave,y*resolution_octave, sigma(z), i*10];
+                                    pointExtreme = [x*resolution_octave,y*resolution_octave, z, i*10];
                                     indexListPoints = indexListPoints +1;
                                     liste_pts{indexListPoints} = pointExtreme;
                                 end
