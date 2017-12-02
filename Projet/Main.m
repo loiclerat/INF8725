@@ -14,6 +14,8 @@ image = rgb2gray(imread('gauche.jpg'));
 image = double(image)/255;
 [listDoG, listOctaves, vectSigma] = differenceDeGaussiennes(image, 3, 3);
 
+%TODO Ça serait pas plutôt S+2 pour avoir 5 sigma et non 6?
+
 
 %Partie 2.2 : Détection des points clés
 
@@ -21,7 +23,7 @@ image = double(image)/255;
 totalSizeListOctaves = r*s;
 
 for i = 1:totalSizeListOctaves
-    listPoints{i} = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma, 0.04 , 10, i );
+    [listPoints{i},counterExtremaDetect{i},counterFaibleContraste{i},counterPointsArretes{i}] = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma, 0.04 , 10, i );
 end 
 
 imshow(image);
@@ -43,20 +45,20 @@ for i = 1:totalSizeListPoints
         x2=centerX+(radius*cos(deg2rad(angle)));
         y2=centerY+(radius*sin(deg2rad(angle)));
         
-        %TODO 
         
-        if i == 1
-            rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'r' );
-            line([centerX,x2],[centerY,y2], 'Color', 'r','LineWidth',2);
-        elseif i == 2
+        
+        if sigmaPoint == vectSigma(1)
+            rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'k' );
+            line([centerX,x2],[centerY,y2], 'Color', 'k','LineWidth',2);
+        elseif sigmaPoint == vectSigma(2)
+             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'r' );
+             line([centerX,x2],[centerY,y2], 'Color', 'r','LineWidth',2);
+        elseif sigmaPoint == vectSigma(3)
              rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'g' );
              line([centerX,x2],[centerY,y2], 'Color', 'g','LineWidth',2);
-        elseif i == 3
+        else %find a better way if more than 3 octaves
              rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'b' );
              line([centerX,x2],[centerY,y2], 'Color', 'b','LineWidth',2);
-        else %find a better way if more than 3 octaves
-             rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'k' );
-             line([centerX,x2],[centerY,y2], 'Color', 'k','LineWidth',2);
         end
     end
 end

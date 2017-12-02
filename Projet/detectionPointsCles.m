@@ -1,4 +1,4 @@
-function [ liste_pts ] = detectionPointsCles( DoG, octave, sigma, seuil_contraste, r_courb_principale, resolution_octave )
+function [ liste_pts,counterExtremaDetect,counterFaibleContraste,counterPointsArretes ] = detectionPointsCles( DoG, octave, sigma, seuil_contraste, r_courb_principale, resolution_octave )
 % Détecte les extrema de chaque DoG d'un octave et élimine les points de faible
 % contraste ainsi que les points d'arêtes. 
 % Assigne une orientation aux points clés ainsi déterminés
