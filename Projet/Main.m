@@ -38,9 +38,46 @@ matDistances = distanceInterPoints(descripteursGauche, descripteursDroite);
 
 % Q1 TODO
 %   - Tracer matrice
-% Q2 TODO
+
+
+% Q2
 %   - Trouver les n plus petites distances
-%   - afficher sur les images pour vérifier
+
+n = 3; %nombre de distances minimales
+
+tempMatDistances = matDistances;
+
+
+for i = 1:n
+
+    %TODO changer la fonction minmat pour qu'elle soit plus claire
+    [x,y] = minmat(tempMatDistances);
+
+
+    tempMatDistances(x,y) = Inf;
+    
+    xGauche = descripteursGauche{x}(1);
+    yGauche = descripteursGauche{x}(2);
+    
+    xDroit = descripteursDroite{y}(1);
+    yDroit = descripteursDroite{y}(2);
+    
+    pointGauche = [xGauche,yGauche];
+    pointDroit = [xDroit,yDroit];
+    
+    listePointGauche{i} = pointGauche;
+    listePointDroit{i} = pointDroit;
+    
+
+
+end
+
+
+%   - Afficher sur les images pour vérifier
+
+afficherCouplePoints(imageGauche,listePointGauche);
+afficherCouplePoints(imageDroite,listePointDroit);
+
 
 
 %Partie 3.0.2 : Homographie
