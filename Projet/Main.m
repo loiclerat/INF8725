@@ -75,6 +75,7 @@ end
 
 %   - Afficher sur les images pour vérifier
 
+%TODO couleur différente pour chacun des couples
 afficherCouplePoints(imageGauche,listePointGauche);
 afficherCouplePoints(imageDroite,listePointDroit);
 
