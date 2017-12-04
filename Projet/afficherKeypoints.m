@@ -22,6 +22,8 @@ function [ ] = afficherKeypoints(image, listPoints )
             x2=centerX+(radius*cos(deg2rad(angle)));
             y2=centerY+(radius*sin(deg2rad(angle)));
 
+            % On crée un cercle de couleur différente pour chaque sigma.
+            % L'angle est représenté par un rayon dans le cercle
             if sigmaIndexPoint == 1
                 rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'k' );
                 line([centerX,x2],[centerY,y2], 'Color', 'k','LineWidth',2);
@@ -31,7 +33,7 @@ function [ ] = afficherKeypoints(image, listPoints )
             elseif sigmaIndexPoint == 3
                  rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'g' );
                  line([centerX,x2],[centerY,y2], 'Color', 'g','LineWidth',2);
-            else %find a better way if more than 3 octaves
+            else 
                  rectangle('Position',[centerX - radius, centerY - radius, radius*2, radius*2],'Curvature',[1,1], 'EdgeColor', 'b' );
                  line([centerX,x2],[centerY,y2], 'Color', 'b','LineWidth',2);
             end

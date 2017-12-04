@@ -17,9 +17,11 @@ imageDroite = double(imageDroite)/255;
 
 disp('Analyse image gauche...');
 descripteursGauche = analyseImage(imageGauche,1);
+save('descripteursGauche.mat','descripteursGauche');
+
 disp('Analyse image droite...');
 descripteursDroite = analyseImage(imageDroite,0);
-
+save('descripteursDroite.mat','descripteursDroite');
 
 %Partie 3 : Matching et homographie
 %Partie 3.0.1 : Recherche de couples amis
@@ -27,24 +29,26 @@ descripteursDroite = analyseImage(imageDroite,0);
 % Recherche des couples amis
 disp('Calcul des distances inter points...');
 matDistances = distanceInterPoints(descripteursGauche, descripteursDroite);
+save('matDistances.mat','matDistances');
 
-% Q1 TODO
-%   - Tracer matrice 
+% Affichage de la matrice obtenue
+figure;
+imshow(matDistances); 
+title('Matrice des distances');
+axis on;
 
-surf(matDistances); %????
 
-% Q2
-%   - Trouver les n plus petites distances
-
+% Recherche des n plus petites distances
 
 disp('Recherche des distances minimales..');
-n = 3; %nombre de distances minimales à calculer
+n = 5; %nombre de distances minimales à calculer
 
 tempMatDistances = matDistances;
 
-
+% Pour les n distances minimales, on retrouve le couple et on assigne une 
+% couleur aux points  
 for i = 1:n
-
+    
     %Fonction qui trouve l'index de l'élément le plus petit d'une matrice
     [x,y] = minimumElemMat(tempMatDistances);
 
@@ -76,7 +80,7 @@ for i = 1:n
 end
 
 
-%   - Afficher sur les images pour vérifier
+% Afficher sur les images pour vérifier
 
 disp('Affichage des couples de points..');
 afficherCouplePoints(imageGauche,listePointGauche,listeCouleur);
