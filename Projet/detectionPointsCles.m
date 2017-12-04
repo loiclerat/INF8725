@@ -49,8 +49,6 @@ for z = 2:o-1
                 notLower = false;
                 equal = false;
                 
-                %TODO : préciser dans le rapport qu'on vérifie d'abord le
-                %contraste
                
                 %Itération à travers les 26 voisins
                 for k = z-1:z+1

@@ -21,12 +21,7 @@ disp('Analyse image droite...');
 descripteursDroite = analyseImage(imageDroite);
 
 
-%Q1 TODO Rapport comme on fait ?  Dxx = imfilter(imfilter(DoG(:,:,o), Gx, 'symmetric','same'), Gx, 'symmetric','same');
-%Q2 TODO Rapport compteurs sont fait , reste qu'à les mettre dans un tableau par octave
-%Q3 TODO Rapport points dans listPoints selon le {i}
-%Q4 Joindre les .mat
-%Q5 Done
-
+%Q4 TODO Joindre les .mat
 
 
 %Partie 3 : Matching et homographie
@@ -37,23 +32,28 @@ disp('Calcul des distances inter points...');
 matDistances = distanceInterPoints(descripteursGauche, descripteursDroite);
 
 % Q1 TODO
-%   - Tracer matrice
+%   - Tracer matrice 
 
+surf(matDistances); %????
 
 % Q2
 %   - Trouver les n plus petites distances
 
-n = 3; %nombre de distances minimales
+
+disp('Recherche des distances minimales..');
+n = 3; %nombre de distances minimales à calculer
 
 tempMatDistances = matDistances;
 
 
 for i = 1:n
 
-    %TODO changer la fonction minmat pour qu'elle soit plus claire
-    [x,y] = minmat(tempMatDistances);
+    %Fonction qui trouve l'index de l'élément le plus petit d'une matrice
+    [x,y] = minimumElemMat(tempMatDistances);
 
-
+    
+    %Remplace la valeur par l'infini dans une matrice temporaire pour
+    %trouver le prochain minimum
     tempMatDistances(x,y) = Inf;
     
     xGauche = descripteursGauche{x}(1);
@@ -68,16 +68,22 @@ for i = 1:n
     listePointGauche{i} = pointGauche;
     listePointDroit{i} = pointDroit;
     
-
+    %On associe une couleur aléatoire au couple de points
+    r = rand;
+    g = rand;
+    b = rand;
+ 
+    couleurPoint = [r,g,b];
+    listeCouleur{i} = couleurPoint;
 
 end
 
 
 %   - Afficher sur les images pour vérifier
 
-%TODO couleur différente pour chacun des couples
-afficherCouplePoints(imageGauche,listePointGauche);
-afficherCouplePoints(imageDroite,listePointDroit);
+disp('Affichage des couples de points..');
+afficherCouplePoints(imageGauche,listePointGauche,listeCouleur);
+afficherCouplePoints(imageDroite,listePointDroit,listeCouleur);
 
 
 
