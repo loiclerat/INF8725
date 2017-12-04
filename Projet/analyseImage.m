@@ -1,4 +1,4 @@
-function [ listDescriptors ] = analyseImage( image )
+function [ listDescriptors ] = analyseImage( image, isLeft )
 % Calcule les descripteurs SIFT d'une image
 
 
@@ -16,6 +16,12 @@ function [ listDescriptors ] = analyseImage( image )
         [listPoints{i},counterExtremaDetect{i},counterFaibleContraste{i},counterPointsArretes{i}] = detectionPointsCles( listDoG{i}, listOctaves{i}, vectSigma, 0.04 , 10, i );
     end 
 
+    if isLeft == 1
+        save('keypointsLeft.mat','listPoints');
+    else
+        save('keypointsRight.mat','listPoints');     
+    end
+    
     % Affichage des points clés
     %afficherKeypoints(image, listPoints);
 

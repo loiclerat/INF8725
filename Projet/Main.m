@@ -16,12 +16,9 @@ imageGauche = double(imageGauche)/255;
 imageDroite = double(imageDroite)/255;
 
 disp('Analyse image gauche...');
-descripteursGauche = analyseImage(imageGauche);
+descripteursGauche = analyseImage(imageGauche,1);
 disp('Analyse image droite...');
-descripteursDroite = analyseImage(imageDroite);
-
-
-%Q4 TODO Joindre les .mat
+descripteursDroite = analyseImage(imageDroite,0);
 
 
 %Partie 3 : Matching et homographie
