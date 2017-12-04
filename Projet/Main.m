@@ -90,3 +90,34 @@ afficherCouplePoints(imageDroite,listePointDroit,listeCouleur);
 
 %Partie 3.0.2 : Homographie
 
+% Question 1
+
+% Construction de la matrice A
+A = zeros(2*n, 9);
+for i = 1:n
+    x1 = listePointGauche{i}(1);
+    y1 = listePointGauche{i}(2);
+    x2 = listePointDroit{i}(1);
+    y2 = listePointDroit{i}(2);
+    xx = -x2*x1;
+    xy = -x2*y1;
+    yx = -y2*x1
+    yy = -y2*y1;
+
+    A(2*i-1,:) = [x1 y1 1 0 0 0 xx xy -x2];
+    A(2*i,:) = [x1 y1 1 0 0 0 yx yy -y2];
+end
+
+AT = transpose(A);
+ATA = dot(AT,A);
+
+valeursPropres = eig(ATA);
+[D,vecteursPropres] = eig(ATA);
+Hflat = valeursPropres(:,min(valeursPropres));
+
+
+
+    
+
+% Question 2
+
