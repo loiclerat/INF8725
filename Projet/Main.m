@@ -106,14 +106,20 @@ for i = 1:n
 end
 
 % Obtention de la matrice de transformation
+
+tic;
+[U,S,V] = svd(A);
+VT = transpose(V);
+toc
+
+tic;
 AT = transpose(A);
 ATA = AT*A;
 
-[U,S,V] = svd(A);
-VT = transpose(V);
+[vecteursPropres,D] = eig(ATA);
+toc;
 
 valeursPropres = eig(ATA);
-[vecteursPropres,D] = eig(ATA);
 [min, argmin] = min(valeursPropres);
 Hflat = vecteursPropres(:,argmin);
 
@@ -123,4 +129,6 @@ HfaltNorm = Hflat/Hflat(end);
 Hnorm = reshape(HfaltNorm, [3,3]);
     
 % Réalisation du panorama
-    % Comment appliquer homographie et placer les images ??
+    % Appliquer homographie en plaçant les images avec warpPerspective ou
+    % un équivalent
+

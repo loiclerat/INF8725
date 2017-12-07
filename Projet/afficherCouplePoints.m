@@ -1,11 +1,11 @@
 function [ ] = afficherCouplePoints(image, listPoints,listeCouleur )
-% Affiche des cercles correspondants aux points clés avec leurs orientations. 
-%La taille et la couleur varient selon le sigma.
+% Affiche des cercles correspondants aux couples de points.
+%La couleur varie selon le couple de points
 
     figure;
     imshow(image);
 
-    % Affichage des points clés sur l'image
+    % Affichage des couples de points sur l'image
     [t,u] = size(listPoints);
     totalSizeListPoints = t*u;
     for i = 1:totalSizeListPoints

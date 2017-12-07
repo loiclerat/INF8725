@@ -1,4 +1,6 @@
 function [ indexX,indexY ] = minimumElemMat( mat )
+
+    %Permet de trouver l'index du plus petit élément d'une matrice donnée
     sizeMat=size(mat);
     [~,I]=min(mat(:));
     r=rem(I,sizeMat(1));
